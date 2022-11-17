@@ -91,7 +91,31 @@ public:
 		}
 	}
 
-	// TODO : If there is still time, implement delete, display, etc.
+	bool delete_key(const Key& key){
+		int position = hash(key);
+		DataEntry *p = NULL,*q = NULL;
+		p = arr[position];
+		if(!p) return 0;
+		if(key == p->key){  // TODO : == operator
+			arr[position]->next = p->next;
+			delete p;
+		}else{
+			q = p;
+			p = q->next;
+			while(p && (p->key != key)){ // TODO: != operator
+				q = p;
+				p = p->next;
+			}
+			if(p){
+				q->next = p->next;
+				delete p;
+			}
+		}
+		count--;
+		return 1;
+	}
+
+	// TODO : If there is still time, implement  display, etc.
 };
 
 

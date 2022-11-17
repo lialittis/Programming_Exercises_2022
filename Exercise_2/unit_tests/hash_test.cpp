@@ -19,6 +19,11 @@ int main(){
 	cout<<hm->get(4)<<endl;
 	cout<<hm->get(89)<<endl;
 	cout<<hm->get(21)<<endl;
+	
+	hm->delete_key(1);
+	hm->delete_key(3);
+	hm->delete_key(21);
+	cout<<"HashTable Size and Count : "<<hm->get_size()<<" "<<hm->get_count()<<endl;
 
 	return 0;
 }
