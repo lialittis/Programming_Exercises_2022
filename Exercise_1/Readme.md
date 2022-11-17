@@ -42,7 +42,7 @@ I am going to solve this challenge in C and show how it works in the following s
 
 This is a simplified illustration of memory management in Linux system.
 
-
+```
 ++++++++++++++++++++++++++++++++++++   High address
 ++                                ++
 ++                            ||  ++
@@ -74,7 +74,7 @@ This is a simplified illustration of memory management in Linux system.
 ++                                ++
 ++                                ++
 ++++++++++++++++++++++++++++++++++++   Low address
-
+```
 
 
 ## malloc
