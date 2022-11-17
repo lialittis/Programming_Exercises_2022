@@ -1,12 +1,13 @@
 #ifndef MY_HASH_H
 #define MY_HASH_H
 
+#include <shared_mutex>
+#include <vector>
 #include <type_traits>
+#include "my_locks.h"
 #pragma once
 
-#include <vector>
-
-#define DEFAULT_SIZE 10
+#define DEFAULT_SIZE 		10
 
 template <class Key, class Value>
 class HashTable {
@@ -19,6 +20,7 @@ private:
 	};
 	int count;
 	std::vector<DataEntry*> arr;
+	std::shared_timed_mutex m_lock;
 public:
 	explicit HashTable(int size = DEFAULT_SIZE):count(0), arr(size) {};
 	
@@ -55,6 +57,9 @@ public:
 	 * hashfind
 	 */
 	DataEntry* hashfind(const Key& key){
+		// ReadLock
+		ReadLock(m_lock);
+
 		int position = hash(key);
 		DataEntry* p = arr[position];
 		for(;p!=NULL;p=p->next){
@@ -65,6 +70,9 @@ public:
 	}
 
 	Value get(const Key& key) const{
+		// ReadLock
+		ReadLock(m_lock);
+		
 		int position = hash(key);
 		DataEntry* p = arr[position];
 		while(p->key != key && p->next){ // TODO : may need overwrite != operator 
@@ -78,6 +86,9 @@ public:
 	}
 
 	void insert(const Key& key, const Value& val){
+		// Write Lock
+		WriteLock(m_lock);
+
 		int position;
 		DataEntry* p;
 		if((p=hashfind(key))==NULL){ // there is no key stored
@@ -92,6 +103,9 @@ public:
 	}
 
 	bool delete_key(const Key& key){
+		// Write Lock
+		WriteLock(m_lock);
+		
 		int position = hash(key);
 		DataEntry *p = NULL,*q = NULL;
 		p = arr[position];

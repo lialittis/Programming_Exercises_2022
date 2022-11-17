@@ -60,5 +60,15 @@ To resolve the collisions, the exercise asks to implement a linked list for each
 For keys with same result from hash function, we always update the new comer as the head of the linked list.
 
 
+## Concurrent operations
+
+To realise multithreading and ensure the thread safety, C++14 has started to offer `shared_mutex` to manage the shared
+memory by readers-writer lock : one or multiple threads could read the resources but only one thread is allowed to write/
+modify the resource.
+
+The shared mutex is implemented as `std::shared_timed_mutex` from C++14, and for writing I use `std::unique_lock` from C++11
+but for reading I use `std::shared_lock` from C++14.
+
+## POSIX shm
 
 
