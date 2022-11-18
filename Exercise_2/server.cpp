@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
 		switch(ptr_shm->hash_operation){
 			case INSERT:
 				ht->insert(ptr_shm->key,ptr_shm->val);
+				ht->display();
 				break;
 			case READ:
 				{
@@ -61,6 +62,7 @@ int main(int argc, char *argv[])
 
 			case DELETE:
 				ht->delete_key(ptr_shm->key);
+				ht->display();
 				break;
 			default:
 				SLOGE("Wrong Instruction!");

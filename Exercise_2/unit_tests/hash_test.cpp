@@ -14,6 +14,8 @@ int main(){
 	ht->insert(1,5);
 	ht->insert(21,6);
 
+	ht->display();
+	
 	cout<<"HashTable Size and Count : "<<ht->get_size()<<" "<<ht->get_count()<<endl;
 	cout<<ht->get(1)<<endl;
 	cout<<ht->get(4)<<endl;
@@ -21,9 +23,13 @@ int main(){
 	cout<<ht->get(21)<<endl;
 	
 	ht->delete_key(1);
+	ht->display();
 	ht->delete_key(3);
+	ht->display();
 	ht->delete_key(21);
 	cout<<"HashTable Size and Count : "<<ht->get_size()<<" "<<ht->get_count()<<endl;
+
+	ht->display();
 
 	return 0;
 }

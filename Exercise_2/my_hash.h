@@ -4,6 +4,7 @@
 #include <shared_mutex>
 #include <vector>
 #include <type_traits>
+#include <iostream>
 #include "my_locks.h"
 #pragma once
 
@@ -116,7 +117,7 @@ public:
 		p = arr[position];
 		if(!p) return 0;
 		if(key == p->key){  // TODO : == operator
-			arr[position]->next = p->next;
+			arr[position] = p->next;
 			delete p;
 		}else{
 			q = p;
@@ -134,7 +135,26 @@ public:
 		return 1;
 	}
 
-	// TODO : If there is still time, implement  display, etc.
+
+	void display(){
+		std::cout<<std::endl;
+		std::cout<<"====Hash Table===="<<std::endl;
+		DataEntry* p;
+		for(int i=0; i<(int)arr.size();i++){
+			if(!arr[i]){
+				std::cout<<"[NULL]"<<std::endl;
+			}else{
+				p = arr[i];
+				std::cout<<"[";
+				while(p){
+					std::cout<<"["<<p->key<<":"<<p->value<<"]->";
+					p = p->next;
+				}
+				std::cout<<"NULL]"<<std::endl;
+			}
+		}
+		std::cout<<"======END======"<<std::endl<<std::endl;
+	}
 };
 
 
