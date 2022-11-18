@@ -8,7 +8,6 @@
 #define META_SIZE (sizeof(struct meta_header)-ALIGNMENT)	// meta header size in each memory block
 
 #define ALIGN(size) ((size + (ALIGNMENT-1)) & ~(ALIGNMENT-1))
-//#define ALIGN(size) (((((size) -1)>>3)<<3) + ALIGNMENT)
 
 typedef struct meta_header* p_header;
 
