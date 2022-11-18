@@ -71,4 +71,13 @@ but for reading I use `std::shared_lock` from C++14.
 
 ## POSIX shm
 
+POSIX shared memory buffer is the fastest approach of IPC communications.
+
+```
+shm_open (const char *name, int oflag, mode_t mode);
+shm_unlink (const char *name);
+```
+
+*oflag : O_RDONLY or O_RDOWR, O_CREAT, O_EXCL*
+
 
