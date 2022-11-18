@@ -24,7 +24,7 @@ private:
 	std::shared_timed_mutex m_lock;
 public:
 	explicit HashTable(int size = DEFAULT_SIZE):count(0), arr(size) {
-		printf("Create a hash table with size :%d\n",size);
+		printf("Create an empty hash table with size :%d\n",size);
 	};
 	
 	~HashTable() {}
@@ -79,7 +79,7 @@ public:
 		
 		if(!p) return 0;
 
-		while(p->key != key && p->next){ // TODO : may need overwrite != operator 
+		while(p && p->key != key){ // TODO : may need overwrite != operator
 			p = p->next;
 		}
 		if(p) { 

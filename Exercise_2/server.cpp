@@ -20,7 +20,6 @@ int main(int argc, char *argv[])
 	
 	// unlink the shared memory buffer if it is already open.
 	shm_unlink(SHM_NAME);
-	printf("%s\n",SHM_NAME);
 	// shm_open : open shared memory
 	int shmFd = shm_open(SHM_NAME, O_RDWR|O_CREAT|O_EXCL, FILE_MODE);
 	if(shmFd < 0){
