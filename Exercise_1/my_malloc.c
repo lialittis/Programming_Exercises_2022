@@ -11,7 +11,8 @@ p_header g_bot = NULL; // the global bottom pointer of heap <=> the base locatio
  * @return p_header header address
  */
 static inline p_header get_header(void* ptr_data){
-	p_header ptr_header = (p_header)ptr_data - META_SIZE;
+	p_header ptr_header = (p_header)(ptr_data - META_SIZE);
+	//printf("find its header %p\n",ptr_header);
 	return ptr_header;
 }
 
@@ -43,15 +44,18 @@ p_header find_fit(p_header* prev, size_t size){
 void split_blk(p_header parent_blk, size_t size){
 	if(!parent_blk) return;
 	p_header child_blk;
-	child_blk = (p_header)parent_blk->data + size; // new block, pointing to the free address after allocating
+	child_blk = (p_header)(parent_blk->data + size); // new block, pointing to the free address after allocating
 	child_blk->size_ = parent_blk->size_ - size - META_SIZE; // rest size for data/payload
 	child_blk->free_ = 1;
 	
 	child_blk->next = parent_blk->next;
-	parent_blk->next->prev = child_blk;
 	child_blk->prev = parent_blk;
+	child_blk->ptr_data = child_blk->data;
 	parent_blk->next = child_blk;
 	parent_blk->size_ = size;
+		
+	if(child_blk->next)
+		child_blk->next->prev = child_blk;
 }
 
 /**
@@ -66,13 +70,15 @@ void split_blk(p_header parent_blk, size_t size){
 p_header extend_heap(p_header prev, size_t size){
 	p_header blk;
 	blk = (p_header)sbrk(0); // get current break location
+	//printf("sbrk(0) original %p\n",sbrk(0));
 	if(sbrk(META_SIZE + size) == (void*)-1) // sbrk fails to increase break location
 		return NULL;
+	//printf("sbrk(0) is increased to %p\n",sbrk(0));
 	blk->prev = prev;
 	blk->next = NULL;
 	blk->size_ = size;
 	blk->free_ = 0;
-	blk->data = blk + META_SIZE;
+	blk->ptr_data = blk->data;
 	/* necessary step for double linked list */
 	if(prev)
 		prev->next = blk;
@@ -90,7 +96,8 @@ int is_valid(void* ptr){
 	if(g_bot && ptr){
 		if(ptr > (void*)g_bot && ptr < sbrk(0) ){
 			/* get header from data address */
-			return ptr == (get_header(ptr))->data;
+			void *p = (get_header(ptr))->data;
+			return ptr == p;
 		}
 	}
 	return 0;
@@ -124,17 +131,18 @@ p_header merge(p_header blk){
 void* my_malloc(size_t size)
 {
 	p_header blk;
-	size_t align_size = ALIGN(ALIGNMENT);
+	size_t align_size = ALIGN(size);
 	// 1.check if the global bottom/base of heap is null
 	if(g_bot){ // there are blocks existed
 		p_header prev = g_bot;
 		// 2. check if there is a available block
-		if((blk = find_fit(&prev, align_size))){
+		blk = find_fit(&prev, align_size);
+		if(blk){
 			if(blk->size_ >= align_size + META_SIZE + 8) // condition to split the block
 				split_blk(blk,align_size);
 			blk->free_ = 0;
 		}else{ // apply a new memory
-			blk = extend_heap(g_bot,align_size);
+			blk = extend_heap(prev,align_size);
 			if(!blk) return NULL; // fail
 		}
 
@@ -146,10 +154,9 @@ void* my_malloc(size_t size)
 		printf("g_bot:%p\n",g_bot);
 		printf("blk:%p\n",blk);
 		printf("blk->data:%p\n",blk->data);
-		printf("blk+meta_size:%p\n",blk+META_SIZE);
 	}
 
-	return blk + META_SIZE;
+	return blk->data;
 }
 
 /**

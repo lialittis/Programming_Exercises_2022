@@ -4,6 +4,17 @@ Implement two (malloc and free) library calls using the sbrk syscall and impleme
 a simple allocation policy to do thread-safe allocation and free. Please also write 
 a short paragraph explaining the policy you implemented, and how it works.
 
+# How to Compile \& Run
+
+The new malloc and free functions are named as `my_malloc` and `my_free` seperately.
+They are implemented into a shared library `libmalloc.so`, to use these two libaray calls,
+don't forget add link to compiler and add library path to environment.
+
+## Unit Tests
+
+I also offer serveral unit tests which are able to call `my_malloc` and `my_free` functions.
+Feel free to test them.
+
 # Allocation policy
 
 Firstly, we consider the heap composed of different size of memory blocks. Each block
@@ -55,12 +66,6 @@ the LIFO policy is used.
 
 # Explanations
 
-The new malloc and free functions are named as `my_malloc` and `my_free` seperately.
-They are implemented into a shared library `libmalloc.so`, to use these two libaray calls,
-don't forget add link to compiler and add library path to environment.
-
-I also offer serveral unit tests which are able to call `my_malloc` and `my_free` functions.
-Feel free to test them.
 
 ## Memory
 
@@ -146,9 +151,13 @@ struct meta_header
 	int padding;	/* padding : 4 bytes */
 	p_header prev;	/* pointing to previous block : 8 bytes */
 	p_header next;	/* pointing to next block : 8 bytes */
-	void* data;	/* pointing to data : 8 bytes */
+	void* ptr_data;	/* pointing to data : 8 bytes */
+	char data[1];	/* first byte of data : not counted in meta */
 };
 ```
+
+Note that, the last item is not counted as meta information, that is why the size of meta is not exactly
+the `sizeof(struct meta_header)`.
 
 ### First Fit
 

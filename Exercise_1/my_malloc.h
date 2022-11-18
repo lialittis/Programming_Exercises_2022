@@ -5,9 +5,10 @@
 #include <unistd.h>
 
 #define ALIGNMENT 8				// could also be 4
-#define META_SIZE sizeof(struct meta_header)	// meta header size in each memory block
+#define META_SIZE (sizeof(struct meta_header)-ALIGNMENT)	// meta header size in each memory block
 
-#define ALIGN(size) (((size) + (ALIGNMENT-1)) & ~(ALIGNMENT-1))
+#define ALIGN(size) ((size + (ALIGNMENT-1)) & ~(ALIGNMENT-1))
+//#define ALIGN(size) (((((size) -1)>>3)<<3) + ALIGNMENT)
 
 typedef struct meta_header* p_header;
 
@@ -23,7 +24,8 @@ struct meta_header
 	int padding;	/* padding : 4 bytes */
 	p_header prev;	/* pointing to previous block : 8 bytes */
 	p_header next;	/* pointing to next block : 8 bytes */
-	void* data;	/* pointing to data : 8 bytes */
+	void* ptr_data;	/* pointing to data : 8 bytes */
+	char data[1];	/* first byte of data : not counted in meta */
 };
 
 /**
