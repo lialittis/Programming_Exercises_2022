@@ -1,7 +1,7 @@
 #include <sys/mman.h>
 #include <pthread.h>
 #include "common_shm.h"
-#include "include/common.h"
+#include "common.h"
 
 int main(int argc, char *argv[])
 {
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 	close(shmFd);
 
 	char instr;
-	int key, val; // TODO: start by int
+	int key, val;
 	printf("Your Request:(I/R/D):\n");
 	while(ptr_shm->count < MAXLOOP && scanf(" %c",&instr)==1){
 		int flag;
@@ -55,6 +55,13 @@ int main(int argc, char *argv[])
 		sem_post(&ptr_shm->sem_c);
 		
 		sem_wait(&ptr_shm->sem_s);
+
+
+		if(flag==READ)
+			if(ptr_shm->flag)
+				printf("Get data entry [%d:%d] from the hash table.\n",key,ptr_shm->val);
+			else
+				printf("There is no %d as the key in the hash table.\n",key);
 		
 		if(ptr_shm->count < MAXLOOP)
 			printf("Your Request:(I/R/D):\n");

@@ -30,12 +30,13 @@
 
 template <class Key, class Value>
 struct SharedMem{
-	int count;
-	sem_t sem_s;
-	sem_t sem_c;
-	size_t hash_operation;
-	Key key;
-	Value val;
+	int flag;		/* whether reading is successful */
+	int count;		/* number of requests */
+	sem_t sem_s;		/* first semaphore */
+	sem_t sem_c;		/* second semaphore */
+	size_t hash_operation;	/* operation type */
+	Key key;		/* key */
+	Value val;		/* value */
 };
 
 typedef SharedMem<int,int> ShmIntInt;

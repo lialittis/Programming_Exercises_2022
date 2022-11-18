@@ -2,7 +2,7 @@
 #include <pthread.h>
 #include <cstdio>
 #include "common_shm.h"
-#include "include/common.h"
+#include "common.h"
 #include "my_hash.h"
 
 int main(int argc, char *argv[])
@@ -40,14 +40,16 @@ int main(int argc, char *argv[])
 	close(shmFd);
 
 	// Initialize semaphore that is shared between processes
-	sem_init(&ptr_shm->sem_s,1,0); // TODO: check the error here
-	sem_init(&ptr_shm->sem_c,1,0); // TODO: check the error here
+	if(sem_init(&ptr_shm->sem_s,1,0)==-1)
+		errExit("sem_s init");
+	if(sem_init(&ptr_shm->sem_c,1,0)==-1)
+		errExit("sem_c init");
 
 	while(ptr_shm->count < MAXLOOP){
 
 		sem_wait(&ptr_shm->sem_c);
 		
-		printf("server count : %d\n",ptr_shm->count);
+		printf("Number of request: #%d\n",ptr_shm->count);
 		switch(ptr_shm->hash_operation){
 			case INSERT:
 				ht->insert(ptr_shm->key,ptr_shm->val);
@@ -55,8 +57,11 @@ int main(int argc, char *argv[])
 				break;
 			case READ:
 				{
-				int v = ht->get(ptr_shm->key);
-				ptr_shm->val = v;
+				int v;
+				if(ht->get(ptr_shm->key,v)){
+					ptr_shm->val = v;
+					ptr_shm->flag = 1;
+				}else{ ptr_shm->flag = 0;}
 				}
 				break;
 

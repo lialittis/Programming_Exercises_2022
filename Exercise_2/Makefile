@@ -16,9 +16,9 @@ client:client.o
 server:server.o
 	$(cc) -o server $^ $(LDFLAGS) $(CXXFLAGS)
 
-client.o:client.cpp common_shm.h common.h
+client.o:client.cpp
 
-server.o:server.cpp common_shm.h common.h my_hash.h my_locks.h
+server.o:server.cpp
 
 clean:
 	-rm *.o client server

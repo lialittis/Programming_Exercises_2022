@@ -1,5 +1,5 @@
-#ifndef MY_HASH_H
-#define MY_HASH_H
+#ifndef __MY_HASH_H__
+#define __MY_HASH_H__
 
 #include <shared_mutex>
 #include <vector>
@@ -60,8 +60,6 @@ public:
 	 * hashfind
 	 */
 	DataEntry* hashfind(const Key& key){
-		// ReadLock
-		ReadLock(m_lock);
 
 		int position = hash(key);
 		DataEntry* p = arr[position];
@@ -72,28 +70,31 @@ public:
 		return NULL;
 	}
 
-	Value get(const Key& key) const{
+	bool get(const Key& key,Value& val){
 		// ReadLock
-		ReadLock(m_lock);
+		ReadLock lock(m_lock);
 		
 		int position = hash(key);
 		DataEntry* p = arr[position];
 		
-		if(!p) return Value();
+		if(!p) return 0;
 
 		while(p->key != key && p->next){ // TODO : may need overwrite != operator 
 			p = p->next;
 		}
-		if(p) return p->value;
+		if(p) { 
+			val = p->value;
+			return 1;
+		}
 		else{
-			return Value(); // return empty
+			return 0; // return empty
 		}
 	
 	}
 
 	void insert(const Key& key, const Value& val){
 		// Write Lock
-		WriteLock(m_lock);
+		WriteLock lock(m_lock);
 
 		int position;
 		DataEntry* p;
@@ -110,7 +111,7 @@ public:
 
 	bool delete_key(const Key& key){
 		// Write Lock
-		WriteLock(m_lock);
+		WriteLock lock(m_lock);
 		
 		int position = hash(key);
 		DataEntry *p = NULL,*q = NULL;
@@ -137,6 +138,9 @@ public:
 
 
 	void display(){
+		// Write Lock
+		WriteLock lock(m_lock);
+		
 		std::cout<<std::endl;
 		std::cout<<"====Hash Table===="<<std::endl;
 		DataEntry* p;
@@ -155,7 +159,20 @@ public:
 		}
 		std::cout<<"======END======"<<std::endl<<std::endl;
 	}
+
+	void clear(){
+		// Write Lock
+		WriteLock lock(m_lock);
+		for(int i=0; i<arr.size();i++){
+			DataEntry* p = arr[i],*q;
+			while(p){
+				q = p;
+				p = p->next;
+				delete q;
+			}
+		}
+	}
 };
 
 
-#endif // MY_HASH_H
+#endif // __MY_HASH_H__

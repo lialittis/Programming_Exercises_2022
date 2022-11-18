@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../my_hash.h"
+#include "my_hash.h"
 
 using namespace std;
 
@@ -15,12 +15,16 @@ int main(){
 	ht->insert(21,6);
 
 	ht->display();
-	
+	int value;
 	cout<<"HashTable Size and Count : "<<ht->get_size()<<" "<<ht->get_count()<<endl;
-	cout<<ht->get(1)<<endl;
-	cout<<ht->get(4)<<endl;
-	cout<<ht->get(89)<<endl;
-	cout<<ht->get(21)<<endl;
+	ht->get(1,value);
+	cout<<value<<endl;
+	ht->get(4,value);
+	cout<<value<<endl;
+	ht->get(89,value);
+	cout<<value<<endl;
+	ht->get(21,value);
+	cout<<value<<endl;
 	
 	ht->delete_key(1);
 	ht->display();
