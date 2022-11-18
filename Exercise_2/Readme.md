@@ -30,11 +30,11 @@ Langurage Version : \>C++14
 
 Compiler Version : g++ 9.4.0
 
-**NOTE** The HashTable is a template class, here the server and client is only prepared for `HashTable<int,int>` type.
-
-**TODO** Make server and client could manipulate different types of HashTable.
+**NOTE** The HashTable is a template class, here the server and client is only implemented for `HashTable<int,int>` type.
 
 ## Compiling
+
+Please use Makefile.
 
 ```
 make

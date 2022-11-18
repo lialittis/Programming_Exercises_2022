@@ -1,5 +1,5 @@
-#ifndef MY_MALLOC_H
-#define MY_MALLOC_H
+#ifndef __MY_MALLOC_H__
+#define __MY_MALLOC_H__
 
 #include <sys/types.h>
 #include <unistd.h>
@@ -198,6 +198,4 @@ void my_free(void* ptr){
 	}	
 }
 
-
-
-#endif // MY_MALLOC_H
+#endif // __MY_MALLOC_H__
