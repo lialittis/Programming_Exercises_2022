@@ -80,4 +80,6 @@ shm_unlink (const char *name);
 
 *oflag : O_RDONLY or O_RDOWR, O_CREAT, O_EXCL*
 
+### semaphore
 
+The semaphore is used to synchronize data.

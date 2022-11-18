@@ -5,25 +5,25 @@ using namespace std;
 
 int main(){
 
-	HashTable<int,int>* hm = new HashTable<int,int>(20);
+	HashTable<int,int>* ht = new HashTable<int,int>(20);
 
 
-	hm->insert(1,3);
-	hm->insert(4,3);
-	hm->insert(89,3);
-	hm->insert(1,5);
-	hm->insert(21,6);
+	ht->insert(1,3);
+	ht->insert(4,3);
+	ht->insert(89,3);
+	ht->insert(1,5);
+	ht->insert(21,6);
 
-	cout<<"HashTable Size and Count : "<<hm->get_size()<<" "<<hm->get_count()<<endl;
-	cout<<hm->get(1)<<endl;
-	cout<<hm->get(4)<<endl;
-	cout<<hm->get(89)<<endl;
-	cout<<hm->get(21)<<endl;
+	cout<<"HashTable Size and Count : "<<ht->get_size()<<" "<<ht->get_count()<<endl;
+	cout<<ht->get(1)<<endl;
+	cout<<ht->get(4)<<endl;
+	cout<<ht->get(89)<<endl;
+	cout<<ht->get(21)<<endl;
 	
-	hm->delete_key(1);
-	hm->delete_key(3);
-	hm->delete_key(21);
-	cout<<"HashTable Size and Count : "<<hm->get_size()<<" "<<hm->get_count()<<endl;
+	ht->delete_key(1);
+	ht->delete_key(3);
+	ht->delete_key(21);
+	cout<<"HashTable Size and Count : "<<ht->get_size()<<" "<<ht->get_count()<<endl;
 
 	return 0;
 }

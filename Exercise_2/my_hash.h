@@ -22,7 +22,9 @@ private:
 	std::vector<DataEntry*> arr;
 	std::shared_timed_mutex m_lock;
 public:
-	explicit HashTable(int size = DEFAULT_SIZE):count(0), arr(size) {};
+	explicit HashTable(int size = DEFAULT_SIZE):count(0), arr(size) {
+		printf("Create a hash table with size :%d\n",size);
+	};
 	
 	~HashTable() {}
 
@@ -75,6 +77,9 @@ public:
 		
 		int position = hash(key);
 		DataEntry* p = arr[position];
+		
+		if(!p) return Value();
+
 		while(p->key != key && p->next){ // TODO : may need overwrite != operator 
 			p = p->next;
 		}
