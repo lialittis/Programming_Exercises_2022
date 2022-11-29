@@ -4,7 +4,7 @@ pthread_mutex_t  mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t  cond = PTHREAD_COND_INITIALIZER;
 int r=0,w=0;
 
-void read(){
+void reader(){
 	// r_lock steps
 	pthread_mutex_lock(&mutex); // lock mutex     
 	while(w != 0) // there are writers waiting
@@ -26,7 +26,8 @@ void read(){
 	pthread_mutex_unlock(&mutex);
 
 }
-void write(){ 
+
+void writer(){ 
 	// w_lock steps
 	pthread_mutex_lock(&mutex);
 	while(w != 0 || r > 0)
