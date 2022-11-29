@@ -7,7 +7,7 @@ If we choose write-preferring, it may allow for less concurrency.
 ## Read-preferring
 
 I offered two ways of implementing(using mutex and semaphore),
-they are in `rw_lock_mutex.cpp` and `rw_lock_mutex.cpp`. As setting the initial
+they are in `rw_lock_mutex.cpp` and `rw_lock_sem.cpp`. As setting the initial
 semaphore as 1, it performs as same as mutex.
 
 - readersCount: count the numebr of current readers
